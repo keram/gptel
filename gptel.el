@@ -1869,7 +1869,7 @@ No state transition here since that's handled by the process sentinels."
       (if (not tracking-marker)         ;Empty response
           (when gptel-mode (gptel--update-status " Empty response" 'success))
         (pulse-momentary-highlight-region start-marker tracking-marker)
-        (when gptel-mode
+        (when (and gptel-mode (not (string-empty-p (gptel-prompt-prefix-string))))
           (save-excursion (goto-char tracking-marker)
                           (insert "\n\n" (gptel-prompt-prefix-string)))
           (gptel--update-status  " Ready" 'success))))
