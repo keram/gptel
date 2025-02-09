@@ -2315,9 +2315,11 @@ waiting for the response."
       (call-interactively #'gptel-menu)
     (message "Querying %s..." (gptel-backend-name gptel-backend))
     (gptel--sanitize-model)
-    (gptel-request nil
+    (gptel-request
+        (and (not (use-region-p)) (car-safe kill-ring) (current-kill 0)) ;; prompt
       :stream gptel-stream
-      :fsm (gptel-make-fsm :handlers gptel-send--handlers))
+      :fsm (gptel-make-fsm :handlers gptel-send--handlers)
+      :in-place t)
     (gptel--update-status " Waiting..." 'warning)))
 
 (declare-function json-pretty-print-buffer "json")
